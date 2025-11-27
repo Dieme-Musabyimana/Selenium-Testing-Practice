@@ -1,4 +1,8 @@
 package tests;
 
-public class HomePageTest {
+import base.BaseTest;
+
+public class HomePageTest extends BaseTest {
+
+
 }
