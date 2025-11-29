@@ -10,20 +10,26 @@ public class AccountLoginPage {
         this.driver = driver;
     }
 
-    private By locateEmailField = By.cssSelector("input[data-aid='MEMBERSHIP_SSO_LOGIN_EMAIL']");
-    private By locatePasswordField = By.cssSelector("input[data-aid='MEMBERSHIP_SSO_LOGIN_PASSWORD']");
-    private By locateSignInButton = By.cssSelector("button[data-aid='MEMBERSHIP_SSO_SUBMIT']");
+    private By emailField = By.cssSelector("input[data-aid='MEMBERSHIP_SSO_LOGIN_EMAIL']");
+    private By passwordField = By.cssSelector("input[data-aid='MEMBERSHIP_SSO_LOGIN_PASSWORD']");
+    private By signInButton = By.cssSelector("button[data-aid='MEMBERSHIP_SSO_SUBMIT']");
+    private By createAccountLink = By.partialLinkText("Create account");
 
     public void enterEmail(String email){
-        driver.findElement(locateEmailField).sendKeys(email);
+        driver.findElement(emailField).sendKeys(email);
     }
 
     public void enterPassword(String password){
-        driver.findElement(locatePasswordField).sendKeys(password);
+        driver.findElement(passwordField).sendKeys(password);
     }
 
     public SecureAreaPage login(){
-        driver.findElement(locateSignInButton).click();
+        driver.findElement(signInButton).click();
         return new SecureAreaPage(driver);
+    }
+
+    public CreateAccountPage clickCreateAccount(){
+        driver.findElement(createAccountLink).click();
+        return new CreateAccountPage(driver);
     }
 }
