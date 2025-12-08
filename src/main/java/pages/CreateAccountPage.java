@@ -27,14 +27,17 @@ public class CreateAccountPage {
     }
 
     public void enterEmail(String email) {
+
         driver.findElement(emailInput).sendKeys(email);
     }
 
     public void enterPhone(String phone) {
+
         driver.findElement(phoneInput).sendKeys(phone);
     }
 
     public void clickCreateAccount() {
+
         driver.findElement(createAccountButton).click();
     }
 
