@@ -10,10 +10,13 @@ public class AccountLoginPage {
         this.driver = driver;
     }
 
-    private By emailField = By.cssSelector("input[data-aid='MEMBERSHIP_SSO_LOGIN_EMAIL']");
-    private By passwordField = By.cssSelector("input[data-aid='MEMBERSHIP_SSO_LOGIN_PASSWORD']");
+    private By emailField = By.cssSelector("input[placeholder='Email']");
+    private By passwordField = By.cssSelector("input[placeholder='Password']");
     private By signInButton = By.cssSelector("button[data-aid='MEMBERSHIP_SSO_SUBMIT']");
     private By createAccountLink = By.partialLinkText("Create account");
+    private By loginErrorMessage = By.xpath(
+            "//*[contains(text(),'password/email address combo is incorrect')]"
+    );
 
     public void enterEmail(String email){
         driver.findElement(emailField).sendKeys(email);
@@ -31,5 +34,12 @@ public class AccountLoginPage {
     public CreateAccountPage clickCreateAccount(){
         driver.findElement(createAccountLink).click();
         return new CreateAccountPage(driver);
+    }
+    public String getLoginErrorMessage(){
+        return driver.findElement(loginErrorMessage).getText();
+    }
+
+    public boolean isLoginErrorDisplayed(){
+        return driver.findElement(loginErrorMessage).isDisplayed();
     }
 }

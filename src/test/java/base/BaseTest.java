@@ -2,7 +2,6 @@ package base;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import pages.HomePage;
 import pages.ModelHandling;
@@ -28,10 +27,10 @@ public class BaseTest {
         homePage = new HomePage(driver);
     }
 
-    @AfterMethod
-    public void tearDown() {
-        if (driver != null) {
-            driver.quit();
-        }
+//    @AfterMethod
+//    public void tearDown() {
+//        if (driver != null) {
+//            driver.quit();
+//        }
     }
-}
+
