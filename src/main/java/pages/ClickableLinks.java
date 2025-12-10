@@ -1,15 +1,10 @@
 package pages;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.JavascriptExecutor;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import org.openqa.selenium.*;
+import java.util.*;
 
 public class ClickableLinks {
+
     private WebDriver driver;
 
     public ClickableLinks(WebDriver driver) {
@@ -17,49 +12,41 @@ public class ClickableLinks {
     }
 
     public LinkReport checkAllLinks() {
-        List<WebElement> allLinks = driver.findElements(By.tagName("a"));
-        List<String> clickableLinks = new ArrayList<>();
-        List<String> unclickableLinks = new ArrayList<>();
-        String mainWindow = driver.getWindowHandle();
+        List<WebElement> links = driver.findElements(By.tagName("a"));
+        List<String> failed = new ArrayList<>();
+        String main = driver.getWindowHandle();
 
-        for (WebElement link : allLinks) {
-            String linkText = link.getText().trim();
-            if (linkText.isEmpty()) {
-                linkText = link.getAttribute("href");
-            }
+        for (WebElement link : links) {
+            String text = link.getText().trim();
+            if (text.isEmpty()) text = link.getAttribute("href");
 
             String href = link.getAttribute("href");
             if (href == null || href.isEmpty()) {
-                unclickableLinks.add(linkText);
+                failed.add(text);
                 continue;
             }
 
             try {
-                ((JavascriptExecutor) driver).executeScript("window.open(arguments[0]);", href);
-                Set<String> windows = driver.getWindowHandles();
-                for (String handle : windows) {
-                    if (!handle.equals(mainWindow)) {
-                        driver.switchTo().window(handle);
+                ((JavascriptExecutor) driver).executeScript("window.open(arguments[0])", href);
+                for (String w : driver.getWindowHandles()) {
+                    if (!w.equals(main)) {
+                        driver.switchTo().window(w);
                         driver.close();
                     }
                 }
-                driver.switchTo().window(mainWindow);
-                clickableLinks.add(linkText);
+                driver.switchTo().window(main);
             } catch (Exception e) {
-                unclickableLinks.add(linkText);
+                failed.add(text);
             }
         }
-
-        return new LinkReport(clickableLinks, unclickableLinks);
+        return new LinkReport(failed);
     }
 
     public static class LinkReport {
-        public List<String> clickableLinks;
-        public List<String> unclickableLinks;
+        public List<String> failed;
 
-        public LinkReport(List<String> clickableLinks, List<String> unclickableLinks) {
-            this.clickableLinks = clickableLinks;
-            this.unclickableLinks = unclickableLinks;
+        public LinkReport(List<String> failed) {
+            this.failed = failed;
         }
     }
 }

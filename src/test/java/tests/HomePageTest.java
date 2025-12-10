@@ -40,3 +40,4 @@ public class HomePageTest extends BaseTest {
         driver.quit();
     }
 }
+
